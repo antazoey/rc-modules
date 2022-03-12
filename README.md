@@ -19,3 +19,14 @@ rcmod source-all
 ```
 
 Add the line above to your root RC file (`.bashrc` etc.).
+
+Once you have profiles, the output will look something like this:
+
+```
+Sourcing environment profiles
+-----------------------------
+docker         ✅
+git            ✅
+python         ✅
+-----------------------------
+```
