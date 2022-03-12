@@ -1,0 +1,86 @@
+#!/bin/bash
+#
+# rcmod CLI
+# ---------
+#
+# This tool is for sourcing files in '$HOME/.rc_modules/profiles/'
+# that follow the naming convention '{name}_profile.sh'.
+#
+# Commands:
+#   --help:     Show the CLI help text
+#   source-all: Source all the files in '$HOME/.rc_modules/profiles/'.
+#
+
+set -eou pipefail
+
+RC_MODULES_PATH="${HOME}/.rc_modules"
+PROFILES_PATH="${HOME}/.rc_modules/profiles"
+
+if [[ ! -d "${RC_MODULES_PATH}" ]]; then
+    mkdir "${RC_MODULES_PATH}"
+fi
+
+if [[ ! -d "${PROFILES_PATH}" ]]; then
+    mkdir "${PROFILES_PATH}"
+fi
+
+_echo_rc_modules_help() {
+    echo
+    echo "`basename "$0"` CLI"
+    echo "---------"
+    echo
+    echo "Profiles path: $HOME/.rc_modules/profiles/"
+    echo
+    echo "Options:"
+    echo -e "\t--help:  show this message"
+    echo
+    echo "Commands:"
+    echo -e "\tsource-all:         source all RC files"
+    echo
+}
+
+source_all() {
+  echo "Sourcing environment profiles"
+  echo "-----------------------------"  
+  pushd "${PROFILES_PATH}" > /dev/null
+  did_push=$?
+  for FILE in *; do
+    source $FILE
+    name=${FILE%"_profile.sh"}
+    max=15
+    name_length=${#name}
+    spacing_count=$(($max - $name_length))
+
+    spacing=""
+    for (( i = 0; i < $spacing_count; i++ )); do
+      spacing="${spacing} "
+    done
+
+    echo -e "${name}${spacing}✅\t"
+  done
+
+  if [[ $did_push == 0 ]]; then
+    popd >> /dev/null
+  fi
+
+  echo "-----------------------------"  
+  echo
+}
+
+main() {
+    cmd=${1:-"--help"}
+
+    case $cmd in
+    "--help")
+    _echo_rc_modules_help
+    ;;
+
+    "source-all")
+    source_all
+    ;;
+
+    *)
+    esac
+}
+
+main "$@"
