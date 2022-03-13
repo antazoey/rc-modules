@@ -7,11 +7,11 @@
 # that follow the naming convention '{name}_profile.sh'.
 #
 # Commands:
-#   --help:     Show the CLI help text
-#   source-all: Source all the files in '$HOME/.rc_modules/profiles/'.
+#   rcmod --help: Show the CLI help text
+#   source rcmod: Source the rcmod file to source all RC files
 #
 
-set -eou pipefail
+set -e
 
 RC_MODULES_PATH="${HOME}/.rc_modules"
 PROFILES_PATH="${HOME}/.rc_modules/profiles"
@@ -31,11 +31,8 @@ _echo_rc_modules_help() {
     echo
     echo "Profiles path: $HOME/.rc_modules/profiles/"
     echo
-    echo "Options:"
-    echo -e "\t--help:  show this message"
-    echo
-    echo "Commands:"
-    echo -e "\tsource-all:         source all RC files"
+    echo -e "\trcmod --help:  show this message"
+    echo -e "\tsource rcmod:  source all RC files"
     echo
 }
 
@@ -68,7 +65,7 @@ source_all() {
 }
 
 main() {
-    cmd=${1:-"--help"}
+    cmd=${1:-"source-all"}
 
     case $cmd in
     "--help")
