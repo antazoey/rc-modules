@@ -11,8 +11,6 @@
 #   source rcmod: Source the rcmod file to source all RC files
 #
 
-set -e
-
 RC_MODULES_PATH="${HOME}/.rc_modules"
 PROFILES_PATH="${HOME}/.rc_modules/profiles"
 
